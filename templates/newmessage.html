@@ -17,37 +17,48 @@
         <!-- favicon -->
         <link href="/static/favicon.ico" rel="icon">
 
-        <title>Messaging App: Home</title>
+        <title>Messaging App: New Message</title>
     </head>
     <body>
       <div class="container-fluid">
         <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">Messaging App</a>
+      <a class="navbar-brand" href="/">New Message</a>
     </div>
     <ul class="nav navbar-nav">
       {% if session.user_id %}
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="/newmessage">New Message</a></li>
+      <li><a href="/">Home</a></li>
       {% endif %}
     </ul>
     <ul class="nav navbar-nav navbar-right">
 	  {% if session.user_id %}
       <li><a href="/logout"> Logout</a></li>
 	  {% endif %}
+      <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li class="active"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
   </div>
 </nav>
 <main class="container p-5">
-{% if feed %}
-{% for x in feed %}
-<div class="row">
-  <div class="col"><strong>{{x[1]}}</strong></div>
-  <div class="col"><a href="/blog/{{feed[x][1]}}" style="color: white;"><button type="button" class="btn btn-primary btn-lg btn-block">Read more</button></a></div>
+  {% if popup %}
+<div class="alert alert-danger" role="alert">
+  {{ popup }}
 </div>
-{% endfor %}
 {% endif %}
+<form class="form-horizontal" action="/newmessage" method="POST">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="toperson">To Username:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="toperson" name="toperson" placeholder="Enter username">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+  </div>
+</form>
         </main>
         <footer class="small text-center text-muted">
 

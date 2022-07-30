@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os
 from functools import wraps
+from select import select
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, send_from_directory
 from flask_session import Session
 from tempfile import mkdtemp
@@ -199,6 +200,7 @@ def register():
         insert_query = f"INSERT INTO users (uuid, username, hash) VALUES ('{testuuid}','{username}', '{hash}');"
         execute_query(connection, insert_query)
         insert_query = "CREATE TABLE feed" + testuuid + " (ID int, personName varchar(255), uniqueID varchar(255));"
+        execute_query(connection, insert_query)
         # Redirects a user to the login page
         return redirect("/login")
 
@@ -210,9 +212,51 @@ def register():
 def index():
     """Shows homepage"""
     if request.method == "GET":
-        select_query = "SELECT * FROM feedsession" + session["user_id"] + " ORDER BY id DESC;"
+        select_query = "SELECT * FROM feed" + session["user_id"] + " ORDER BY id DESC;"
         row = execute_read_query(connection, select_query)
         return render_template("index.html", feed=row)
+@app.route("/newmessage", methods=["GET", "POST"])
+def newmessage():
+    """New message"""
+
+    # User reached route via POST; usually by subitting a form to login
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("toperson"):
+            return render_template("newmessage.html", popup="Ensure that you submitted a username to write to")
+
+        # Query database for username
+        username=request.form.get("toperson")
+        check_query = (
+            f"SELECT * FROM users WHERE username = '{username}';"
+            )
+        rows = execute_read_query(connection, check_query)
+        # Ensure username exists and password is correct
+        if not rows:
+            return render_template("newmessage", popup="Invalid username")
+        theiruuid = rows[0][0]
+        name = request.form.get("toperson")
+        testuuid = str(uuid.uuid4())
+        insert_query = f"CREATE TABLE message{testuuid} (ID int, content varchar(255), by int);"
+        execute_query(connection, insert_query)
+        select_query = "SELECT * FROM feed" + session["user_id"]
+        count = execute_read_query(connection, select_query)
+        insert_query = "INSERT INTO feed" + session["user_id"] + f" (ID, personName, uniqueID) VALUES ('{count}', '{name}', '{testuuid}');"
+        execute_query(connection, insert_query)
+
+        select_query = "SELECT * FROM feed" + theiruuid
+        count = execute_read_query(connection, select_query)
+        select_query = "SELECT * FROM users WHERE uuid=" + session["user_id"] + ";"
+        myname = execute_read_query(connection, select_query)
+        insert_query = "INSERT INTO feed" + theiruuid + f" (ID, personName, uniqueID) VALUES ('{count}', '{myname}', '{testuuid}');"
+        execute_query(connection, insert_query)
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("newmessage.html")
 #@app.route("/post", methods=["GET", "POST"])
 #@login_required
 #def post():
