@@ -163,17 +163,17 @@ def register():
         elif not request.form.get("confirmation"):
             return render_template("register.html", popup="Must re-enter password")
 
-        elif not request.form.get("email"):
-            return render_template("register.html", popup="Enter a valid email")
+        #elif not request.form.get("email"):
+            #return render_template("register.html", popup="Enter a valid email")
 
-        elif not request.form.get("bday"):
-            return render_template("register.html", popup="Enter your birthday")
+        #elif not request.form.get("bday"):
+            #return render_template("register.html", popup="Enter your birthday")
 
         elif not request.form.get("password") == request.form.get("confirmation"):
             return render_template("register.html", popup="Verify your passwords match")
 
-        elif not checkmail(request.form.get("email")):
-            return render_template("register.html", popup="Enter a valid email")
+        #elif not checkmail(request.form.get("email")):
+            #return render_template("register.html", popup="Enter a valid email")
 
         # Query database for username
         username = request.form.get("username")
@@ -183,7 +183,7 @@ def register():
         if rows:
             return render_template("register.html", popup="Username already exists")
 
-        bday = request.form.get("bday")
+        #bday = request.form.get("bday")
 
         password=request.form.get("password")
         hash = generate_password_hash(password)
@@ -196,16 +196,14 @@ def register():
                 uniqueuuid = 1;
         email = request.form.get("email")
 
-        insert_query = f"INSERT INTO users (uuid, username, hash, email, bday, admin) VALUES ('{testuuid}','{username}', '{hash}', '{email}', '{bday}', 0);"
+        insert_query = f"INSERT INTO users (uuid, username, hash) VALUES ('{testuuid}','{username}', '{hash}');"
         execute_query(connection, insert_query)
         # Redirects a user to the login page
         return redirect("/login")
 
     # User reached route via GET (as by clicking a link)
     else:
-        today = date.today()
-        maxdate = today.strftime("%Y-%m-%d")
-        return render_template("register.html", maxdate=maxdate)
+        return render_template("register.html")
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
