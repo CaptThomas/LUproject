@@ -74,34 +74,34 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
-@app.route('/blog/<path:path>', methods=["GET", "POST"])
-@login_required
-def send_blog(path):
-    if request.method == "POST":
-        if not request.form.get("comments"):
-            return render_template(f"blog/{path}.html", popup="Enter a comment")
-        elif request.form.get("comments") == "Enter up to 255 characters":
-            return render_template(f"blog/{path}.html", popup="Enter a comment")
-        elif len(request.form.get("comments")) > 255:
-            return render_template(f"blog/{path}.html", popup="Please limit yourself to 255 characters")
-        body = sanitizer.sanitize(request.form.get("comments"))
-        testuuid = session["user_id"]
-        select_query = f"SELECT username FROM users WHERE uuid = '{testuuid}';"
-        rows = execute_read_query(connection, select_query)
-        author = sanitizer.sanitize(rows[0][0])
-        datepublished = (date.today()).strftime("%m/%d/%Y")
-        select_query = f"SELECT id FROM feed WHERE uuid='{path}';"
-        rows = execute_read_query(connection, select_query)
-        query = f"INSERT INTO comments{rows[0][0]} (author, date, body) VALUES ('{author}', '{datepublished}', '{body}');"
-        execute_query(connection, query)
-        return redirect(f"/blog/{path}")
-    else:
-        select_query = f"SELECT id FROM feed WHERE uuid='{path}';"
-        rows = execute_read_query(connection, select_query)
-        select_query = f"SELECT * FROM comments{rows[0][0]} ORDER BY id;"
-        comments = execute_read_query(connection, select_query)
-        return render_template(f"blog/{path}.html", comments=comments)
-
+#@app.route('/blog/<path:path>', methods=["GET", "POST"])
+#@login_required
+#def send_blog(path):
+    #if request.method == "POST":
+        #if not request.form.get("comments"):
+            #return render_template(f"blog/{path}.html", popup="Enter a comment")
+        #elif request.form.get("comments") == "Enter up to 255 characters":
+            #return render_template(f"blog/{path}.html", popup="Enter a comment")
+        #elif len(request.form.get("comments")) > 255:
+            #return render_template(f"blog/{path}.html", popup="Please limit yourself to 255 characters")
+        #body = sanitizer.sanitize(request.form.get("comments"))
+        #testuuid = session["user_id"]
+        #select_query = f"SELECT username FROM users WHERE uuid = '{testuuid}';"
+        #rows = execute_read_query(connection, select_query)
+        #author = sanitizer.sanitize(rows[0][0])
+        #datepublished = (date.today()).strftime("%m/%d/%Y")
+        #select_query = f"SELECT id FROM feed WHERE uuid='{path}';"
+        #rows = execute_read_query(connection, select_query)
+        #query = f"INSERT INTO comments{rows[0][0]} (author, date, body) VALUES ('{author}', '{datepublished}', '{body}');"
+        #execute_query(connection, query)
+        #return redirect(f"/blog/{path}")
+    #else:
+        #select_query = f"SELECT id FROM feed WHERE uuid='{path}';"
+        #rows = execute_read_query(connection, select_query)
+        #select_query = f"SELECT * FROM comments{rows[0][0]} ORDER BY id;"
+        #comments = execute_read_query(connection, select_query)
+        #return render_template(f"blog/{path}.html", comments=comments)
+#
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Logs a user in"""
