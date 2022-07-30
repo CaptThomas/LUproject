@@ -45,16 +45,6 @@ def create_connection(path):
 
     return connection
 connection = create_connection("orso.db")
-regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-def checkmail(email):
-
-    # pass the regular expression
-    # and the string in search() method
-    if(re.search(regex,email)):
-        return(1)
-
-    else:
-        return(0)
 def execute_read_query(connection, query):
     cursor = connection.cursor()
     result = None
