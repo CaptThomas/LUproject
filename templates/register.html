@@ -17,7 +17,7 @@
         <!-- favicon -->
         <link href="/static/favicon.ico" rel="icon">
 
-        <title>Orsolingo: Register</title>
+        <title>Messaging App: Register</title>
 
     </head>
     <body>
@@ -25,7 +25,7 @@
         <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">Orsolingo</a>
+      <a class="navbar-brand" href="/">Messaging App</a>
     </div>
     <ul class="nav navbar-nav">
       {% if session.user_id %}
@@ -64,18 +64,6 @@
     <label class="control-label col-sm-2" for="confirmation">Repeat password:</label>
     <div class="col-sm-10">
       <input type="password" class="form-control" id="confirmation" name="confirmation" placeholder="Re-enter password">
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="email">Email address:</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="email" name="email" placeholder="john.smith@example.com">
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="bday">Birthday:</label>
-    <div class="col-sm-10">
-      <input type="date" class="form-control" id="bday" name="bday" value="2021-03-16" min="1900-01-01" max="{{maxdate}}">
     </div>
   </div>
   <div class="form-group">
