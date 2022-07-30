@@ -194,10 +194,11 @@ def register():
             rows = execute_read_query(connection, select_query)
             if not rows:
                 uniqueuuid = 1;
-        email = request.form.get("email")
+        
 
         insert_query = f"INSERT INTO users (uuid, username, hash) VALUES ('{testuuid}','{username}', '{hash}');"
         execute_query(connection, insert_query)
+        insert_query = "CREATE TABLE feed" + testuuid + " (ID int, personName varchar(255), uniqueID varchar(255));"
         # Redirects a user to the login page
         return redirect("/login")
 
@@ -209,7 +210,7 @@ def register():
 def index():
     """Shows homepage"""
     if request.method == "GET":
-        select_query = "SELECT * FROM feed" + session["user_id"] + " ORDER BY id DESC;"
+        select_query = "SELECT * FROM feedsession" + session["user_id"] + " ORDER BY id DESC;"
         row = execute_read_query(connection, select_query)
         return render_template("index.html", rows=len(row), feed=row)
 #@app.route("/post", methods=["GET", "POST"])
