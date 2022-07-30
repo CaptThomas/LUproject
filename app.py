@@ -38,7 +38,7 @@ if __name__ == '__main__':
 def create_connection(path):
     connection = None
     try:
-        connection = sqlite3.connect(path)
+        connection = sqlite3.connect(path, check_same_thread=False)
         print("Connection to SQLite DB successful")
     except Error as e:
         print(f"The error '{e}' occurred")
@@ -212,7 +212,7 @@ def index():
     if request.method == "GET":
         select_query = "SELECT * FROM feedsession" + session["user_id"] + " ORDER BY id DESC;"
         row = execute_read_query(connection, select_query)
-        return render_template("index.html", rows=len(row), feed=row)
+        return render_template("index.html", feed=row)
 #@app.route("/post", methods=["GET", "POST"])
 #@login_required
 #def post():
