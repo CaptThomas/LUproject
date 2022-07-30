@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- documentation at http://getbootstrap.com/docs/3.4/, alternative themes at https://bootswatch.com/ -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <!-- favicon -->
+        <link href="/static/favicon.ico" rel="icon">
+
+        <title>Orsolingo: Register</title>
+
+    </head>
+    <body>
+      <div class="container-fluid">
+        <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Orsolingo</a>
+    </div>
+    <ul class="nav navbar-nav">
+      {% if session.user_id %}
+	  <li><a href="/">Home</a></li>
+      {% endif %}
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      {% if session.user_id %}
+      <li><a href="/logout"> Logout</a></li>
+	    {% endif %}
+      <li class="active"><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+  </div>
+</nav>
+<main class="container p-5">
+    {% if popup %}
+<div class="alert alert-danger" role="alert">
+  {{ popup }}
+</div>
+{% endif %}
+<form class="form-horizontal" action="/register" method="POST">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="username">Username:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="password">Password:</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="confirmation">Repeat password:</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="confirmation" name="confirmation" placeholder="Re-enter password">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="email">Email address:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="email" name="email" placeholder="john.smith@example.com">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="bday">Birthday:</label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control" id="bday" name="bday" value="2021-03-16" min="1900-01-01" max="{{maxdate}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+  </div>
+</form>
+        </main>
+        <footer class="small text-center text-muted">
+            {% if session.user_id %}
+            Want to change your password? Press <a href="/resetpass">here</a>
+            {% endif %}
+        </footer>
+        </div>
+    </body>
+    </html>
